@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0c0d13" />
+  <title>Fluxio — Mon catalogue Xtream</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <div id="loginScreen" class="login-screen">
+    <div class="orb orb-a"></div><div class="orb orb-b"></div>
+    <div class="login-top"><div class="brand-mark">▶</div><strong>FLUXIO<span class="brand-dot">.</span></strong><span class="top-pill">Xtream Catalog</span></div>
+    <div class="login-wrap">
+      <div class="login-intro">
+        <div class="eyebrow"><span class="spark"></span> VOTRE CENTRE DE DIVERTISSEMENT</div>
+        <h1>Tout votre catalogue.<br><em>Au même endroit.</em></h1>
+        <p>Vos chaînes en direct, vos films et vos séries, dans une interface moderne. Connectez votre abonnement Xtream pour commencer.</p>
+        <div class="feature-row"><span>◉ TV en direct</span><span>▣ Films</span><span>▤ Séries</span></div>
+        <div class="preview-window" aria-hidden="true">
+          <div class="preview-top"><span class="preview-dots">● ● ●</span><span>Votre bibliothèque</span><span>⌕</span></div>
+          <div class="preview-hero"><div class="tiny-tag">VOTRE CONTENU</div><div class="preview-title">À regarder<br>quand vous voulez<span>.</span></div><div class="preview-bars"><i></i><i></i><i></i></div></div>
+          <div class="preview-grid"><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div class="login-panel">
+        <div class="panel-icon">↗</div>
+        <div class="eyebrow subtle">CONNEXION SÉCURISÉE</div>
+        <h2>Accédez à votre espace</h2>
+        <p>Entrez les informations fournies par votre service IPTV.</p>
+        <form id="loginForm" autocomplete="off">
+          <label for="server">Lien du serveur Xtream ou M3U</label>
+          <input id="server" name="server" type="text" inputmode="url" placeholder="http://serveur.exemple:8080" required spellcheck="false" />
+          <div class="help-text">Les liens <code>get.php?username=...</code> sont également acceptés.</div>
+          <label for="username">Nom d’utilisateur</label>
+          <input id="username" name="username" placeholder="Votre identifiant" spellcheck="false" />
+          <label for="password">Mot de passe</label>
+          <div class="password-box"><input id="password" name="password" type="password" placeholder="Votre mot de passe" /><button type="button" id="togglePassword" aria-label="Afficher le mot de passe">◉</button></div>
+          <div class="form-error" id="loginError" role="alert"></div>
+          <button class="primary-btn connect-btn" id="connectBtn" type="submit">Se connecter <span>↗</span></button>
+        </form>
+        <div class="security-note"><span>♢</span> Vos identifiants ne sont pas enregistrés dans le navigateur.</div>
+      </div>
+    </div>
+    <div class="login-footer">FLUXIO / LECTEUR PERSONNEL <span>Utilisez uniquement des accès et contenus autorisés.</span></div>
+  </div>
+
+  <div id="dashboard" class="dashboard hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo"><div class="brand-mark">▶</div><strong>FLUXIO<span class="brand-dot">.</span></strong></div>
+      <div class="sidebar-caption">BIBLIOTHÈQUE</div>
+      <nav class="nav-links" aria-label="Bibliothèque">
+        <button class="nav-link active" data-section="live"><span class="nav-icon">◉</span><span>TV en direct</span><span class="nav-arrow">›</span></button>
+        <button class="nav-link" data-section="movies"><span class="nav-icon">▣</span><span>Films</span><span class="nav-arrow">›</span></button>
+        <button class="nav-link" data-section="series"><span class="nav-icon">▤</span><span>Séries</span><span class="nav-arrow">›</span></button>
+        <button class="nav-link" data-section="favorites"><span class="nav-icon">♡</span><span>Mes favoris</span><span class="nav-arrow">›</span></button>
+      </nav>
+      <div class="sidebar-bottom"><div class="status-dot"></div><div><strong>Serveur connecté</strong><small id="serverLabel">–</small></div></div>
+      <button class="logout" id="logoutBtn">↪ &nbsp; Se déconnecter</button>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="crumb"><button id="menuBtn" class="mobile-menu" aria-label="Menu">☰</button><span>Bibliothèque</span><b>/</b><strong id="breadcrumb">TV en direct</strong></div>
+        <div class="topbar-right"><div class="online"><i></i> EN LIGNE</div><span class="avatar">FX</span></div>
+      </header>
+      <section class="dashboard-content">
+        <div class="hero-banner">
+          <div class="hero-copy"><div class="hero-eyebrow"><span>✦</span> BIENVENUE SUR FLUXIO</div><h2>Votre univers.<br><em>Vos envies.</em></h2><p>Explorez tous vos contenus depuis un seul endroit.</p><button id="exploreBtn" class="hero-action">Explorer le catalogue <span>↗</span></button></div>
+          <div class="hero-art" aria-hidden="true"><span class="hero-ring r1"></span><span class="hero-ring r2"></span><div class="hero-play">▶</div><div class="hero-glow"></div></div>
+        </div>
+        <div class="section-heading"><div><div class="eyebrow section-kicker">DÉCOUVRIR</div><h2 id="sectionTitle">TV en direct</h2><p id="sectionSubtitle">Toutes les chaînes de votre abonnement.</p></div><span class="count-pill" id="countPill">— éléments</span></div>
+        <div class="toolbar"><div class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Rechercher un contenu..." autocomplete="off" aria-label="Rechercher" /></div><div class="select-wrap"><select id="categorySelect" aria-label="Catégorie"><option value="all">Toutes les catégories</option></select><span>⌄</span></div><button id="refreshBtn" class="refresh-btn" title="Actualiser l’affichage">↻</button></div>
+        <div class="library-status" id="libraryStatus" role="status"></div>
+        <div class="content-grid" id="contentGrid"></div>
+        <div class="load-more-wrap"><button id="loadMore" class="outline-btn hidden">Afficher plus de contenus ↓</button></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="detail-panel"><button class="modal-close" id="closeModal" aria-label="Fermer">✕</button><div id="modalContent"></div></div>
+  </div>
+  <div class="modal-backdrop hidden" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
+    <div class="player-panel"><div class="player-header"><div><small>EN LECTURE</small><h2 id="playerTitle">Lecteur</h2></div><button class="modal-close inline" id="closePlayer" aria-label="Fermer le lecteur">✕</button></div><video id="videoPlayer" controls autoplay playsinline></video><div class="player-note" id="playerNote">Si une vidéo ne s’ouvre pas, son format n’est peut-être pas compatible avec le navigateur.</div></div>
+  </div>
+</body>
+</html>
